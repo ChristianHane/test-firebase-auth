@@ -84,8 +84,9 @@ $(document).ready(function(){
             // The firebase.auth.AuthCredential type that was used.
             var credential = error.credential;
             // ...
-          });
-    })
+        });
+        
+    });
 
     //facebook sign in
     $("#facebook").on("click", function() {
@@ -110,7 +111,7 @@ $(document).ready(function(){
             // The firebase.auth.AuthCredential type that was used.
             var credential = error.credential;
             // ...
-            });
+        });
     });
 });
 
