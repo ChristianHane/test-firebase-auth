@@ -75,6 +75,7 @@ $(document).ready(function(){
             $(".display-user").empty();            
             $(".display-user").text(user.displayName);            
         } else if(user) {
+            $(".display-user").empty();                       
             $(".display-user").text(user.email);      
         } else{
             console.log("no user!");
