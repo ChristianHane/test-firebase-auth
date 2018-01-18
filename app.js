@@ -63,6 +63,7 @@ $(document).ready(function(){
         event.preventDefault();    
         firebase.auth().signOut().then(function() {
             // console.log("signed out!");
+            $(".display-user").empty();  
             }).catch(function(error) {
             console.log("something happened with sign out.");
         });
