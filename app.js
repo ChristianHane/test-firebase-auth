@@ -53,19 +53,24 @@ $(document).ready(function(){
         });
     });
 
+    var displayName;
+
     firebase.auth().onAuthStateChanged(function(user) {
         if(user) {
+            displayName = user.displayName.val();
             console.log(user);
         } else {
             console.log("no user!");
         }
     });
 
+    console.log(displayName);
+
 
     // google login
     $("#google").on("click", function() {
         var provider = new firebase.auth.GoogleAuthProvider();        
-        firebase.auth().signInWithRedirect(provider);    
+        firebase.auth().signInWithRedirect(provider);
     })
 
     //facebook sign in
