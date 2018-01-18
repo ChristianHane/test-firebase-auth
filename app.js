@@ -71,10 +71,12 @@ $(document).ready(function(){
 
     //listens for changes to user sign in status
     firebase.auth().onAuthStateChanged(function(user) {
-        if(user) {
+        if(user.displayName !== null) {
             $(".display-user").empty();            
             $(".display-user").text(user.displayName);            
-        } else {
+        } else if(user) {
+            $(".display-user").text(user.email);      
+        } else{
             console.log("no user!");
         }
     });
