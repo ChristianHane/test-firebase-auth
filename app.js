@@ -56,9 +56,9 @@ $(document).ready(function(){
 
     firebase.auth().onAuthStateChanged(function(user) {
         if(user) {
-            $("#display-user").empty();
-            $("#display-user").text(user.displayName);            
+            $(".display-user").text(user.displayName);            
         } else {
+            $(".display-user").empty();
             console.log("no user!");
         }
     });
