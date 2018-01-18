@@ -83,7 +83,7 @@ $(document).ready(function(){
         // The signed-in user info.
         console.log(result);
         var user = result.user;
-        $("#display-user").text(user.displayName);
+        $("#display-user").append("<p>" + user.displayName + "</p>");
         console.log(user);
         console.log(user.displayName);
     }).catch(function(error) {
