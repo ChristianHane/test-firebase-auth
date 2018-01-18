@@ -10,6 +10,7 @@ $(document).ready(function(){
     };
     firebase.initializeApp(config);
 
+    //user create account with email
     $("#submit").on("click", function(event){
         event.preventDefault();
         var email= $("#email").val();
@@ -26,13 +27,14 @@ $(document).ready(function(){
         }
     })
     
+    //user login with email
     $("#sign-in").on("click", function(){
         event.preventDefault();    
         var email = $("#sign-in-email").val();
         var password = $("#sign-in-password").val();
         firebase.auth().signInWithEmailAndPassword(email, password)
         .then(function(user){
-            // console.log(user);
+            console.log(user);
         })
         .catch(function(error) {
             // Handle Errors here.
@@ -43,17 +45,31 @@ $(document).ready(function(){
             // ...
         });
     });
+
+    // google login
+    $("#google").on("click", function() {
+        var provider = new firebase.auth.GoogleAuthProvider();        
+        firebase.auth().signInWithRedirect(provider);
+    });
+
+    //facebook login
+    $("#facebook").on("click", function() {
+        var provider = new firebase.auth.FacebookAuthProvider();
+        firebase.auth().signInWithRedirect(provider);
     
+    });
+
+    //sign out
     $("#sign-out").on("click", function(){
         event.preventDefault();    
         firebase.auth().signOut().then(function() {
             // console.log("signed out!");
-          }).catch(function(error) {
+            }).catch(function(error) {
             console.log("something happened with sign out.");
         });
     });
 
-
+    //listens for changes to user sign in status
     firebase.auth().onAuthStateChanged(function(user) {
         if(user) {
             $(".display-user").empty();            
@@ -63,19 +79,7 @@ $(document).ready(function(){
         }
     });
 
-    // google login
-    $("#google").on("click", function() {
-        var provider = new firebase.auth.GoogleAuthProvider();        
-        firebase.auth().signInWithRedirect(provider);
-    });
-
-    //facebook sign in
-    $("#facebook").on("click", function() {
-        var provider = new firebase.auth.FacebookAuthProvider();
-        firebase.auth().signInWithRedirect(provider);
-    
-    });
-
+    //for api calls to user sign in methods
     firebase.auth().getRedirectResult().then(function(result) {
         if (result.credential) {
           // This gives you a Facebook Access Token. You can use it to access the Facebook API.
