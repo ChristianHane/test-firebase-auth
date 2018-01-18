@@ -56,7 +56,6 @@ $(document).ready(function(){
     $("#facebook").on("click", function() {
         var provider = new firebase.auth.FacebookAuthProvider();
         firebase.auth().signInWithRedirect(provider);
-    
     });
 
     //sign out
@@ -75,6 +74,7 @@ $(document).ready(function(){
             $(".display-user").empty();            
             $(".display-user").text(user.displayName);  
         } else{
+            $(".display-user").empty();                        
             console.log("no user!");
         }
     });
