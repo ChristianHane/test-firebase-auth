@@ -56,6 +56,7 @@ $(document).ready(function(){
 
     firebase.auth().onAuthStateChanged(function(user) {
         if(user) {
+            $("#display-user").append("<p>" + user.displayName + "</p>");            
         } else {
             console.log("no user!");
         }
