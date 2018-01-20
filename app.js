@@ -1,31 +1,22 @@
-$(document).ready(function(){
-    // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyBSRyLZcUwZCqIcBvv3GP2ltQ7RA_uQRTU",
-        authDomain: "test-for-auth-78f1a.firebaseapp.com",
-        databaseURL: "https://test-for-auth-78f1a.firebaseio.com",
-        projectId: "test-for-auth-78f1a",
-        storageBucket: "",
-        messagingSenderId: "459604740117"
-    };
-    firebase.initializeApp(config);
+// trailAPI action
+/*
+notes on query string params:
+limit=25 - how many results to return
+q[activities_activity_type_name_eq]=hiking - searches by activity, not sure what the options are.
+q[city_cont]=Los+Angeles - the city to search for
+q[state_cont]=California - state to search in
+radius=25 - radius to search in, value in miles
+*/
+// activities: hiking, mountain biking,
 
-    //user create account with email
-    $("#submit").on("click", function(event){
-        event.preventDefault();
-        var email= $("#email").val();
-        var password= $("#password").val();
-        var repeatPassword = $("#repeat-password").val();
-        if(password === repeatPassword){
-            firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then(function(user){
-                console.log(user);
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
-        }
-    })
+$("#search-butt").on("click", function(event) {
+    event.preventDefault();
+    var search;
+    var lat;
+    var lng;
+    var radius = $("#radius").val();
+    search = $("#search").val();
+    console.log(search);
     
     //user login with email
     $("#sign-in").on("click", function(){
