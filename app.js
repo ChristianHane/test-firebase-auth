@@ -62,6 +62,7 @@ $(document).ready(function(){
     $("#sign-out").on("click", function(){
         event.preventDefault();    
         firebase.auth().signOut().then(function() {
+
             // console.log("signed out!");
             }).catch(function(error) {
             console.log("something happened with sign out.");
@@ -72,9 +73,10 @@ $(document).ready(function(){
     firebase.auth().onAuthStateChanged(function(user) {
         if(user) {   
             $(".display-user").empty();            
-            $(".display-user").text(user.displayName);  
+            $(".display-user").text(user.displayName); 
+            console.log(user); 
         } else{
-            $(".display-user").empty();                        
+            $(".display-user").text();
             console.log("no user!");
         }
     });
