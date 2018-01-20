@@ -1,105 +1,62 @@
-$(document).ready(function(){
-    // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyBSRyLZcUwZCqIcBvv3GP2ltQ7RA_uQRTU",
-        authDomain: "test-for-auth-78f1a.firebaseapp.com",
-        databaseURL: "https://test-for-auth-78f1a.firebaseio.com",
-        projectId: "test-for-auth-78f1a",
-        storageBucket: "",
-        messagingSenderId: "459604740117"
-    };
-    firebase.initializeApp(config);
+// trailAPI action
+/*
+notes on query string params:
+limit=25 - how many results to return
+q[activities_activity_type_name_eq]=hiking - searches by activity, not sure what the options are.
+q[city_cont]=Los+Angeles - the city to search for
+q[state_cont]=California - state to search in
+radius=25 - radius to search in, value in miles
+*/
+// activities: hiking, mountain biking,
 
-    //user create account with email
-    $("#submit").on("click", function(event){
-        event.preventDefault();
-        var email= $("#email").val();
-        var password= $("#password").val();
-        var repeatPassword = $("#repeat-password").val();
-        if(password === repeatPassword){
-            firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then(function(user){
-                console.log(user);
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
-        }
-    })
+$("#search-butt").on("click", function(event) {
+    event.preventDefault();
+    var search;
+    var lat;
+    var lng;
+    var radius = $("#radius").val();
+    search = $("#search").val();
+    console.log(search);
     
-    //user login with email
-    $("#sign-in").on("click", function(){
-        event.preventDefault();    
-        var email = $("#sign-in-email").val();
-        var password = $("#sign-in-password").val();
-        firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(function(user){
-            console.log(user);
-        })
-        .catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(error);
-            console.log(errorCode);
-            // ...
-        });
-    });
-
-    // google login
-    $("#google").on("click", function() {
-        var provider = new firebase.auth.GoogleAuthProvider();        
-        firebase.auth().signInWithRedirect(provider);
-    });
-
-    //facebook login
-    $("#facebook").on("click", function() {
-        var provider = new firebase.auth.FacebookAuthProvider();
-        firebase.auth().signInWithRedirect(provider);
-    });
-
-    //sign out
-    $("#sign-out").on("click", function(){
-        event.preventDefault();    
-        firebase.auth().signOut().then(function() {
-            // console.log("signed out!");
-            $(".display-user").empty();  
-        }).catch(function(error) {
-            console.log("something happened with sign out.");
-        });
-    });
-
-    //listens for changes to user sign in status
-    firebase.auth().onAuthStateChanged(function(user) {
-        if(user) {   
-            $(".display-user").empty();            
-            $(".display-user").text(user.displayName);  
-        } else{
-            $(".display-user").text();                        
-            console.log("no user!");
-        }
-    });
-
-    //for api calls to user sign in methods
-    firebase.auth().getRedirectResult().then(function(result) {
-        if (result.credential) {
-          // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-          var token = result.credential.accessToken;
-          // ...
-        }
-        // The signed-in user info.
-        console.log(result);
-        var user = result.user;
-    }).catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
-        // ...
-    });
+    var queryURL = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + search + "&location=42.3675294,-71.186966&radius=5000&key=AIzaSyBBx-fTMyEih3dDWIEQIVOkSYPYT0G8Sss"
+    
+    // "https://maps.googleapis.com/maps/api/place/textsearch/json?query=hiking&key=AIzaSyALaHhcPqOK-uUOTa9ay1wm0jvKgHH9DVk"
+    // "https://maps.googleapis.com/maps/api/geocode/json?address=" + search + "&key=AIzaSyBziF4Fc3JyyFZY3LJ0gOEOtV7W1fqZcpk";
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).done(function(data) {
+        console.log(data);
+        // lat = data.results[0].geometry.location.lat;
+        // lng = data.results[0].geometry.location.lng;
+        // console.log(lat);
+        // console.log(lng);
+        // var trailsURL = "https://trailapi-trailapi.p.mashape.com/?lat=" + lat + "&lon=" + lng + "&limit=25&q[activities_activity_type_name_eq]=hiking&radius=" + radius;
+        // $.ajax({
+        //     url: trailsURL,
+        //     method: 'GET',
+        //     headers: {
+        //         'X-Mashape-Key': 'kxaa71ARPxmshqwGoA6fOcXu8ChDp1RDh9XjsnIo1otQQoB3nF',
+        //         'Accept': 'text/plain'
+        //     }
+        // }).done(function(response) {
+        //     // console.log(response);
+        //     // console.log(response.places.length);
+        //     var places = response.places;
+        //     for(var i = 0; i < places.length; i++){
+        //         var newItem = $("<p>");
+        //         newItem.append("<p>" + places[i].city + "</p>");
+        //         newItem.append("<p>" + places[i].name + "</p>");
+        //         newItem.append("<p>" + places[i].activities[0].activity_type_name + "</p>");
+        //         newItem.append("<p>" + places[i].activities[0].length + " miles</p>");
+        //         newItem.append("<p>" + places[i].activities[0].description + "</p>");
+        //         // newItem.append("<img>" + pla)
+        //         newItem.append("<a href='" + places[i].activities[0].url + "'>more info</a>");
+        //         $("#list-places").append(newItem);
+        //         console.log(newItem);
+        //     }
+        // });  
+    })
 });
 
 
